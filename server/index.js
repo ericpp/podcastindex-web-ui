@@ -133,15 +133,92 @@ app.use('/api/comments/byepisodeid', async (req, res) => {
         res.status(400).send('The episode does not contain a socialInteract property')
     }
 
-    const userAgent = USER_AGENT;
-    const cache = new InMemoryCache();
-    const fetcher = makeRateLimitedFetcher(fetch);
+    // send a HEAD request to the social interact url
+    // to see if it's a mastodon server
+    let presponse = await fetch(socialInteract[0].uri, {
+        method: 'HEAD',
+    })
 
-    const threadcap = await makeThreadcap(socialInteract[0].uri, { userAgent, cache, fetcher });
+    // parse the si url into parts
+    let url = new URL(socialInteract[0].uri)
+    let ids;
 
-    await updateThreadcap(threadcap, { updateTime: new Date().toISOString(), userAgent, cache, fetcher });
+    // if it's a mastodon server and a /@user/1231456 url, then use the mastodon api
+    if (
+        presponse.headers.get('Server').includes('Mastodon') &&
+        (ids = url.pathname.match(/\/\@[^\/]+\/([0-9]+)/))
+    ) {
+        let id = ids[1];
 
-    res.send(threadcap)
+        // pull in the root post
+        let rresponse = await fetch(`${url.origin}/api/v1/statuses/${id}`)
+        let root = await rresponse.json();
+
+        // pull in replies to the root post
+        let cxresponse = await fetch(`${url.origin}/api/v1/statuses/${id}/context`)
+        let context = await cxresponse.json();
+
+        // combine root and replies together
+        let comments = context.descendants.concat([root]);
+
+        // track comments that are in reply to other comments
+        let replies = comments.reduce((result, comment) => {
+            if (comment.in_reply_to_id) {
+                result[comment.in_reply_to_id] = result[comment.in_reply_to_id] || []
+                result[comment.in_reply_to_id].push(comment.uri);
+            }
+            return result
+        }, {});
+
+        // commenter information
+        let commenters = comments.reduce((result, comment) => {
+            result[comment.account.url] = {
+                'asof': comment.account.created_at,
+                'fqUsername': comment.account.acct,
+                'icon': {
+                    'mediaType': 'image/jpeg',
+                    'url': comment.account.avatar,
+                },
+                'name': comment.account.display_name,
+                'url': comment.account.url,
+            }
+            return result
+        }, {})
+
+        // comments
+        let nodes = comments.reduce((result, comment) => {
+            result[comment.uri] = {
+                'comment': {
+                    'attachments': comment.media_attachments,
+                    'attributedTo': comment.account.url,
+                    'content': {'en': comment.content},
+                    'published': comment.created_at,
+                    'url': comment.url,
+                },
+                'commentAsof': comment.created_at,
+                'replies': replies[comment.id] || [],
+                'repliesAsof': comment.created_at,
+            }
+            return result
+        }, {})
+
+        res.send({
+            'commenters': commenters,
+            'nodes': nodes,
+            'protocol': 'activitypub',
+            'roots': [root.uri],
+        });
+    }
+
+//     const userAgent = USER_AGENT;
+//     const cache = new InMemoryCache();
+//     const fetcher = makeRateLimitedFetcher(fetch);
+
+//     const threadcap = await makeThreadcap(socialInteract[0].uri, { userAgent, cache, fetcher });
+
+//     await updateThreadcap(threadcap, { updateTime: new Date().toISOString(), userAgent, cache, fetcher });
+
+//     res.send(threadcap)
 })
 
 // ------------------------------------------------
