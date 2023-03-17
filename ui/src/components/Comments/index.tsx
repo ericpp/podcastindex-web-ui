@@ -118,14 +118,37 @@ export default class Comments extends React.PureComponent<IProps, IState> {
             commenters: {}
         };
 
+
         if(!this.state.comments.length) {
             this.setState({
                 loadingComments: true
             });
 
+            const nsJsonStream = new TransformStream({
+                // https://web.dev/streams/#creating-a-transform-stream
+                transform(chunk, controller) {
+                    const decoded = new TextDecoder().decode(chunk);
+                    this.buffer = (this.buffer || '') + decoded
+                    let index = -1;
+
+                    while ((index = this.buffer.indexOf("\n")) !== -1) {
+                        const chk = this.buffer.substring(0, index)
+                        controller.enqueue(JSON.parse(chk));
+                        this.buffer = this.buffer.substring(index + 1)
+                    }
+                },
+                flush(controller) {
+                    if (this.buffer) {
+                        controller.enqueue(JSON.parse(this.buffer));
+                    }
+
+                    controller.terminate();
+                },
+            });
+
             const response = await fetch('/api/comments/byepisodeid?' + new URLSearchParams({id: String(this.props.id) }));
 
-            const reader = response.body.getReader();
+            const reader = response.body.pipeThrough(nsJsonStream).getReader();
 
             const thisComponent = this;
 
@@ -136,11 +159,9 @@ export default class Comments extends React.PureComponent<IProps, IState> {
                     });
                     return;
                 }
-                const parsedChunk = JSON.parse(new TextDecoder().decode(value));
-                
-                updateResponseBody(responseBody, parsedChunk);
 
-                
+                updateResponseBody(responseBody, value);
+
                 const stateToSet: any = {
                     showComments: true,
                 };

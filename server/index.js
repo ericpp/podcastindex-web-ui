@@ -174,7 +174,7 @@ function writeThreadcapChunk(processedNodeId, threadcap, sentCommenters, res) {
         threadcapChunk.commenters[comment.attributedTo] = threadcap.commenters[comment.attributedTo];
     }
 
-    res.write(JSON.stringify(threadcapChunk))
+    res.write(JSON.stringify(threadcapChunk) + "\n")
 }
 
 // ------------------------------------------------
