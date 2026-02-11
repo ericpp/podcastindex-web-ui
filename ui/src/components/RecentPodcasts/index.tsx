@@ -94,13 +94,13 @@ export default class RecentPodcasts extends React.Component<IProps, IState> {
                                 className="player-nav-arrows-left"
                                 onClick={this.onBack.bind(this)}
                             >
-                                <img src={BackIcon} height={20}/>
+                                <img src={BackIcon} height={20} alt="Previous podcast" />
                             </button>
                             <button
                                 className="player-nav-arrows-right"
                                 onClick={this.onForward.bind(this)}
                             >
-                                <img src={ForwardIcon} height={20}/>
+                                <img src={ForwardIcon} height={20} alt="Next podcast" />
                             </button>
                         </div>
                         {title && (
@@ -120,6 +120,7 @@ export default class RecentPodcasts extends React.Component<IProps, IState> {
                                             this.onImageLoad()
                                         }}
                                         onLoad={this.onImageLoad}
+                                        alt={selectedPodcast.feedTitle}
                                     />
                                     {imageLoading && <div className="image-loading-placeholder">
                                         <ReactLoading type="cylon" color="#e90000"/>

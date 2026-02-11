@@ -103,7 +103,7 @@ export default class Landing extends React.Component<IProps, IState> {
                         {/*        target="_blank"*/}
                         {/*        href="https://feeds.podcastindex.org/pc20.xml"*/}
                         {/*    >*/}
-                        {/*        <img src={RSSLogo} />*/}
+                        {/*        <img src={RSSLogo} alt="RSS" />*/}
                         {/*    </a>*/}
                         {/*</div>*/}
                     </div>
@@ -248,6 +248,7 @@ export default class Landing extends React.Component<IProps, IState> {
                             height={25}
                             width={25}
                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Mastodon_Logotype_%28Simple%29.svg/223px-Mastodon_Logotype_%28Simple%29.svg.png"
+                            alt="Mastodon"
                         />
                     </a>
                     <a href="https://twitter.com/PodcastindexOrg">
@@ -255,6 +256,7 @@ export default class Landing extends React.Component<IProps, IState> {
                             height={25}
                             width={30}
                             src="https://www.creativefreedom.co.uk/wp-content/uploads/2017/06/Twitter-featured.png"
+                            alt="Twitter"
                         />
                     </a>
                 </div> */}

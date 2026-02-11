@@ -124,10 +124,10 @@ export default class TopBar extends React.PureComponent<IProps, IState> {
                         // height={38}
                         width={36}
                         src={BrandIcon}
-                        alt="Brand logo"
+                        alt=""
                     />
                     <div className="topbar-title">
-                        <img src={BrandName} width={230} alt="Brand name"/>
+                        <img src={BrandName} width={230} alt="Podcast Index"/>
                     </div>
                 </Link>
                 <div className="topbar-span">

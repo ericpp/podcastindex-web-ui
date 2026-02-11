@@ -181,7 +181,7 @@ export default class EpisodeItem extends React.PureComponent<IProps> {
                                 title="Episode Link on Podcast Index"
                             >
                                 <img
-                                    alt={`Link to ${title} on Podcast Index`}
+                                    alt="Episode Link on Podcast Index"
                                     src={LinkLogo}/>
                             </Link>
 

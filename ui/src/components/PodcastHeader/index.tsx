@@ -100,6 +100,7 @@ export default class PodcastHeader extends React.PureComponent<IProps, PodState>
                             onError={(ev: any) => {
                                 ev.target.src = NoImage
                             }}
+                            alt="Cover art"
                         />
                     </div>
                     <div className="podcast-header-info">
@@ -118,7 +119,9 @@ export default class PodcastHeader extends React.PureComponent<IProps, PodState>
                                     target="_blank"
                                 >
                                     <img
-                                        src={EarthLogo}/>
+                                        src={EarthLogo}
+                                        alt="Website"
+                                    />
                                 </a>
                                 : ""
                             }
@@ -128,7 +131,7 @@ export default class PodcastHeader extends React.PureComponent<IProps, PodState>
                                     title="RSS Feed"
                                     target="_blank"
                                 >
-                                    <img src={RSSLogo}/>
+                                    <img src={RSSLogo} alt="RSS" />
                                 </a>
                                 : ""
                             }
@@ -138,7 +141,7 @@ export default class PodcastHeader extends React.PureComponent<IProps, PodState>
                                     title="Donation Page"
                                     target="_blank"
                                 >
-                                    <img src={DonationPage}/>
+                                    <img src={DonationPage} alt="Donation" />
                                 </a>
                                 : ""
                             }
@@ -149,7 +152,7 @@ export default class PodcastHeader extends React.PureComponent<IProps, PodState>
                                     target="_blank"
                                     id="aLightningClaim"
                                 >
-                                    <img src={LightningLogo}/>
+                                    <img src={LightningLogo} alt="Lightning" />
                                 </a>
                                 : ""
                             }
@@ -163,7 +166,7 @@ export default class PodcastHeader extends React.PureComponent<IProps, PodState>
                                     title="Follow in your podcast app"
                                     target="_blank"
                                 >
-                                    <img src={PodlinkLogo} />
+                                    <img src={PodlinkLogo} alt="Podlink" />
                                 </a>
                                 : ''
                             }

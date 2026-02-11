@@ -206,7 +206,7 @@ export default class Player extends React.Component<IProps> {
                             // href={}
                             style={{ width: 30 }}
                         >
-                            {/* <img src={FeedIcon} /> */}
+                            {/* <img src={FeedIcon} alt="Feed" /> */}
                         </a>,
                     ]}
                 />

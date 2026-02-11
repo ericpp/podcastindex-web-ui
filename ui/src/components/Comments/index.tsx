@@ -88,7 +88,11 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
             {!this.props.comment.commentError && this.props.comment.loaded &&
                 <summary>
                     <a className='profile' href={this.props.comment.attributedTo.url}>
-                        <img className='profile-img' src={this.props.comment.attributedTo.iconUrl || '/images/brand-icon.svg'} />
+                        <img
+                            className='profile-img'
+                            src={this.props.comment.attributedTo.iconUrl || '/images/brand-icon.svg'}
+                            alt="Profile image"
+                        />
                         <div className='user'>
                             <strong>{this.props.comment.attributedTo.name}</strong>
                             <span className='handle'>{this.props.comment.attributedTo.account}</span>
@@ -131,7 +135,7 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
             {!this.props.comment.loaded && 
                 <summary>
                     <a className='profile' href={this.props.comment.url}>
-                        <img className='profile-img' src='/images/brand-icon.svg' />
+                        <img className='profile-img' src='/images/brand-icon.svg' alt="Podcast Index logo" />
                         <strong>Loading...</strong>
                     </a>
                 </summary>
@@ -139,7 +143,7 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
             {this.props.comment.commentError && 
                 <summary>
                     <a className='profile' href={this.props.comment.url}>
-                        <img className='profile-img' src='/images/brand-icon.svg' />
+                        <img className='profile-img' src='/images/brand-icon.svg' alt="Podcast Index logo" />
                         <strong>Error loading this comment</strong>
                     </a>
                 </summary>

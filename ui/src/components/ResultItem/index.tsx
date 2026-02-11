@@ -63,6 +63,7 @@ export default class ResultItem extends React.PureComponent<IProps> {
                                     ev.target.src = NoImage
                                 }}
                                 loading="lazy"
+                                alt="Cover art"
                             />
                         </Link>
                     </div>
